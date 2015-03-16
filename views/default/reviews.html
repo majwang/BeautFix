@@ -1,0 +1,29 @@
+{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{extend 'layout.html'}}
+
+
+<h1 align = 'center'>{{=display_title}}</h1>
+
+<div id = 'categorySelection'; align = 'center'>
+    {{=select}}
+
+</div>
+
+<script>
+    jQuery('select[name=category]').on('change', function(){
+        if (name === 'Makeup"){
+            temp = {{subselect2}}
+            jQuery('subselect2[name=category]').on('change', function(){});
+            }
+    });
+</script>
+
+<!--<form>
+    <ul align = 'Center'>
+      <li><span style="font-weight: bold; font-size: 20px">Find:</span> 
+          <input name="name" />
+          <input type="submit"/>
+      </li>
+    </ul>
+</form>
+-->

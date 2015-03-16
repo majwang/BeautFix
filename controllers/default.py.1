@@ -1,0 +1,235 @@
+# -*- coding: utf-8 -*-
+# this file is released under public domain and you can use without limitations
+
+import logging
+    
+def view():
+    """View a post."""
+    # p = db(db.bboard.id == request.args(0)).select().first()
+    #p = db.post(request.args(0))
+    #form = SQLFORM(db.post, record=p, readonly=True)
+    row_id = request.args(0)
+    title = db.forum[row_id].title
+    body = db.forum[row_id].body
+    post = True if request.vars.post == 'y' else False
+    backbutton = A('Back', _class='btn', _href=URL('default', 'forums'))
+    button = A('Post', _class='btn', _href=URL('default', 'view', args = [row_id], vars=dict(post='y')))  
+    thread = db(db.forum.title == title).select().first()
+    thread_id = thread.id if thread is not None else None
+    if post:
+        backbutton = ""
+        button = ""
+        form = SQLFORM.factory(db.post)
+        form.add_button('Cancel', URL('default', 'view', args = [row_id]))
+        if form.process().accepted:
+           if not auth.user:
+               session.flash = T("Please login first")
+               redirect(URL('default', 'forums'))
+           db.post.insert(body=form.vars.body, thread_id = thread_id)
+           redirect(URL('default', 'view', args = [row_id]))
+
+    else:
+        form = SQLFORM.grid(db.post.thread_id == thread_id, user_signature = False,
+                fields=[db.post.date_posted,db.post.body, db.post.author],
+                editable=False, deletable=False, details = False, create = False, searchable = False, csv = False, 
+                paginate=50, orderby =~ db.post.date_posted,maxtextlength = 250)
+
+    # p.name would contain the name of the poster.
+    return dict(form=form, title=title, body=body, button=button, backbutton = backbutton)
+    
+def addLike():
+    row_id = request.args(0)
+    title = db.forum[row_id].title
+    thread = db(db.forum.title == title).select().first()
+    thread.likes = int(thread.likes) + 1
+    thread.update_record()
+    redirect(URL('default', 'forums'))
+
+def forums():
+    title = 'Forums'
+    display_title = title.title()
+    editing = True if request.vars.edit == 'y' else False
+    button = A('+ Thread', _class='btn', _href=URL('default', 'forums', vars=dict(edit='y')))
+    def generate_goto_button(row):
+        b = A('Go to', _class='btn', _href=URL('default', 'view', args=[row.id]))
+        return b
+    def generate_like_button(row):
+        b = A('^', _class='btn', _href=URL('default', 'addLike', args=[row.id]))
+        return b
+    
+    if editing:
+        button = ""
+        form = SQLFORM.factory(db.forum)
+        form.add_button('Cancel', URL('default', 'forums'))
+        if form.process().accepted:
+           if not auth.user:
+               session.flash = T("Please login first")
+               redirect(URL('default', 'forums'))
+           db.forum.insert(body=form.vars.body, title=form.vars.title, category=form.vars.category)
+           redirect(URL('default', 'forums'))
+
+    else:
+        links=[dict(header='', body = generate_like_button), dict(header='', body = generate_goto_button)]
+
+        form = SQLFORM.grid(db.forum, user_signature = False,
+                fields=[db.forum.title, db.forum.category, db.forum.date_posted, db.forum.author, db.forum.likes],
+                editable=False, deletable=False, details = False, create = False, searchable = False, csv = False, 
+                paginate=50, orderby =~ db.forum.date_posted,maxtextlength = 50, links=links)
+
+    return dict(display_title=display_title, form=form, addThread = button)
+
+
+
+def reviews():
+    title = 'Write a Review'
+    display_title = title.title()
+        
+    form = SQLFORM.factory(Field('search')
+                           )
+    return dict(display_title=display_title,form=form)
+
+@auth.requires_login()
+def account():
+    title = 'Account'
+    display_title = title.title()
+    form = auth.profile()
+    return dict(display_title=display_title,form=form)
+    
+def index():
+    title = 'Beautfix'
+    # You have to serve to the user the most recent revision of the 
+    # page with title equal to title.
+    
+    # Let's uppernice the title.  The last 'title()' below
+    # is actually a Python function, if you are wondering.
+    display_title = title.title()
+
+    page = db(db.pagetable.title == title).select().first()
+    page_id = page.id if page is not None else None
+    r = db(db.revision.page_id == page_id).select(orderby=~db.revision.date_posted).first()
+    s = r.body if r is not None else ''
+    
+    #editing = true if request.vars.edit=’y’ else False
+    if request.vars.edit == 'y':
+        editing = True
+    else:
+        editing = False
+        
+    #If exitsts:
+    if page_id is not None:
+        #fetch record from revision table with latest entry of    
+        form = FORM.confirm('Edit',{'Beautfix': URL('default', 'index')})
+        
+        if form.accepted:
+            if not auth.user:
+                session.flash = T("Please login first")
+                redirect(URL('default', 'index',args=[title]))
+            redirect(URL('default', 'index',args=[title],vars=dict(edit='y')))
+        
+        if editing:
+            #create an edit SQLFORM.factory item where you’ll take input
+            #of content  from the user. This block should have default 
+            #text as the latest revision of an existing page.
+            form = SQLFORM.factory(Field('body', 'text',
+                                     label='Content',
+                                     default=s
+                                     ))
+            form.add_button('Cancel', URL('default', 'index'))
+            content = form
+            
+            if form.process().accepted:
+                if r is None:
+                    page_id = db.pagetable.insert(title=title)
+                    db.revision.insert(body=form.vars.body,page_id=page_id)
+                else:
+                    db.revision.insert(body=form.vars.body,page_id=page_id)
+                redirect(URL('default', 'index', args=[title]))
+
+        else:
+            content=represent_wiki(s)
+        
+        return dict(display_title=display_title, content=content, editing=editing, form=form)
+        
+    else:
+        
+        if editing:
+            #create an edit SQLFORM.factory item where you’ll take input
+            #of content  from the user. This block should have default 
+            #text as the latest revision of an existing page.
+            form = SQLFORM.factory(Field('body', 'text',
+                                     label='Content',
+                                     default=s
+                                     ))
+            form.add_button('Cancel', URL('default', 'index'))
+            content = form
+            
+            if form.process().accepted:
+                if r is None:
+                    page_id = db.pagetable.insert(title=title)
+                    db.revision.insert(body=form.vars.body,page_id=page_id)
+                else:
+                    db.revision.insert(body=form.vars.body,page_id=page_id)
+                redirect(URL('default', 'index',args=[title]))
+        
+        else:
+            if title == 'Beautfix':
+                form = SQLFORM.factory(Field('search'))
+                if form.process().accepted:
+                    redirect(URL('default', 'index', args=[form.vars.search]))
+                content = represent_wiki("")
+                return dict(display_title=display_title, content=content, editing=editing, form=form)
+            else:
+                content = represent_wiki("The page doesn't exit, do you want to create a page")
+                form = FORM.confirm('Yes', {'No':URL('default', 'index')})
+                if form.accepted:
+                    redirect(URL('default', 'index',args=[title],vars=dict(edit='y')))
+        return dict(display_title=display_title, content=content, editing=editing, form=form)
+
+def user():
+    """
+    exposes:
+    http://..../[app]/default/user/login
+    http://..../[app]/default/user/logout
+    http://..../[app]/default/user/register
+    http://..../[app]/default/user/profile
+    http://..../[app]/default/user/retrieve_password
+    http://..../[app]/default/user/change_password
+    http://..../[app]/default/user/manage_users (requires membership in
+    use @auth.requires_login()
+        @auth.requires_membership('group name')
+        @auth.requires_permission('read','table name',record_id)
+    to decorate functions that need access control
+    """
+    return dict(form=auth())
+
+
+@cache.action()
+def download():
+    """
+    allows downloading of uploaded files
+    http://..../[app]/default/download/[filename]
+    """
+    return response.download(request, db)
+
+
+def call():
+    """
+    exposes services. for example:
+    http://..../[app]/default/call/jsonrpc
+    decorate with @services.jsonrpc the functions to expose
+    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv
+    """
+    return service()
+
+
+@auth.requires_login() 
+def api():
+    """
+    this is example of API with access control
+    WEB2PY provides Hypermedia API (Collection+JSON) Experimental
+    """
+    from gluon.contrib.hypermedia import Collection
+    rules = {
+        '<tablename>': {'GET':{},'POST':{},'PUT':{},'DELETE':{}},
+        }
+    return Collection(db).process(request,response,rules)
