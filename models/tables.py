@@ -1,4 +1,5 @@
 # coding: utf8
+# coding: utf8
 from datetime import datetime
 import re
 import unittest
@@ -18,8 +19,8 @@ BATHBODY_CATEGORY = ['LotionCreams', 'BathShower', 'Sun', 'Other' ]
 HAIR_CATEGORY = ['StylingTools', 'Treatment', 'ShampooConditioner', 'Other']
 TOOLSBRUSHES_CATEGORY = ['HairStyleTools', 'MakeupBrushesApplicators', 'Other']
 MEN_CATEGORY = ['Fragrance', 'SkinCare', 'Shaving', 'Hair', 'Other']
-PRICE_RANGE = ['$', '$$', '$$$', '$$$$', '$$$$$']
-RATING = ['*', '**', '***', '****', '*****']
+PRICE_RANGE = [1, 2, 3, 4, 5]
+RATING = [1, 2, 3, 4, 5]
 db.define_table('forum',
                 Field('title'),
                 Field('category'),
@@ -40,71 +41,93 @@ db.define_table('makeup',
                 Field('product', required = True),
                 Field('author', default = get_first_name(), writable = False),
                 Field('category', requires = IS_IN_SET(MAKEUP_CATEGORY, error_message = 'Field Required')),
-                Field('price_range', requires = IS_IN_SET(PRICE_RANGE, error_message = 'Choose price range')),
-                Field('rating', requires = IS_IN_SET(RATING, error_message = 'Choose a Rating')),
+                Field('total_price_range', 'float', requires = IS_IN_SET(PRICE_RANGE, error_message = 'Choose price range')),
+                Field('price_range', 'float', writable = False),
+                Field('totalRating', 'float', requires = IS_IN_SET(RATING, error_message = 'Choose a Rating')),
+                Field('rating', 'float', writable = False),
                 Field('body', 'text'),
-                Field('image', 'upload'),
+                Field('image'),
                 Field('date_posted', 'datetime', default = datetime.utcnow(), writable = False),
+                Field('reviewCount', 'integer', default = 0, writable = False),
     )
 
 db.define_table('skinCare',
                 Field('product', required = True),
                 Field('author', default = get_first_name(), writable = False),
                 Field('category', requires = IS_IN_SET(SKIN_CATEGORY , error_message = 'Field Required')),
-                Field('price_range', requires = IS_IN_SET(PRICE_RANGE, error_message = 'Choose price range')),
-                Field('rating', requires = IS_IN_SET(RATING, error_message = 'Choose a Rating')),
+                Field('total_price_range', 'float', requires = IS_IN_SET(PRICE_RANGE, error_message = 'Choose price range')),
+                Field('price_range', 'float', writable = False),
+                Field('totalRating', 'float', requires = IS_IN_SET(RATING, error_message = 'Choose a Rating')),
+                Field('rating', 'float', writable = False),
                 Field('body', 'text'),
-                Field('image', 'upload'), 
+                Field('image'),
                 Field('date_posted', 'datetime', default = datetime.utcnow(), writable = False),
+                Field('reviewCount', 'integer', default = 0, writable = False),
     )
 
 db.define_table('bathBody',
                 Field('product', required = True),
                 Field('author', default = get_first_name(), writable = False),
                 Field('category', requires = IS_IN_SET(BATHBODY_CATEGORY , error_message = 'Field Required')),
-                Field('price_range', requires = IS_IN_SET(PRICE_RANGE, error_message = 'Choose price range')),
-                Field('rating', requires = IS_IN_SET(RATING, error_message = 'Choose a Rating')),
+                Field('total_price_range', 'float', requires = IS_IN_SET(PRICE_RANGE, error_message = 'Choose price range')),
+                Field('price_range', 'float', writable = False),
+                Field('totalRating', 'float', requires = IS_IN_SET(RATING, error_message = 'Choose a Rating')),
+                Field('rating', 'float', writable = False),
                 Field('body', 'text'),
-                Field('image', 'upload'),
+                Field('image'),
                 Field('date_posted', 'datetime', default = datetime.utcnow(), writable = False),
+                Field('reviewCount', 'integer', default = 0, writable = False),
     )
 
 db.define_table('hair',
                 Field('product', required = True),
                 Field('author', default = get_first_name(), writable = False),
                 Field('category', requires = IS_IN_SET(HAIR_CATEGORY, error_message = 'Field Required')),
-                Field('price_range', requires = IS_IN_SET(PRICE_RANGE, error_message = 'Choose price range')),
-                Field('rating', requires = IS_IN_SET(RATING, error_message = 'Choose a Rating')),
+                Field('total_price_range', 'float', requires = IS_IN_SET(PRICE_RANGE, error_message = 'Choose price range')),
+                Field('price_range', 'float', writable = False),
+                Field('totalRating', 'float', requires = IS_IN_SET(RATING, error_message = 'Choose a Rating')),
+                Field('rating', 'float', writable = False),
                 Field('body', 'text'),
-                Field('image', 'upload'),
+                Field('image'),
                 Field('date_posted', 'datetime', default = datetime.utcnow(), writable = False),
+                Field('reviewCount', 'integer', default = 0, writable = False),
     )
 
 db.define_table('toolsBrushes',
                 Field('product', required = True),
                 Field('author', default = get_first_name(), writable = False),
                 Field('category', requires = IS_IN_SET(TOOLSBRUSHES_CATEGORY, error_message = 'Field Required')),
-                Field('price_range', requires = IS_IN_SET(PRICE_RANGE, error_message = 'Choose price range')),
-                Field('rating', requires = IS_IN_SET(RATING, error_message = 'Choose a Rating')),
+                Field('total_price_range', 'float', requires = IS_IN_SET(PRICE_RANGE, error_message = 'Choose price range')),
+                Field('price_range', 'float', writable = False),
+                Field('totalRating', 'float', requires = IS_IN_SET(RATING, error_message = 'Choose a Rating')),
+                Field('rating', 'float', writable = False),
                 Field('body', 'text'),
-                Field('image', 'upload'),
+                Field('image'),
                 Field('date_posted', 'datetime', default = datetime.utcnow(), writable = False),
+                Field('reviewCount', 'integer', default = 0, writable = False),
     )
 
 db.define_table('men',
                 Field('product', required = True),
                 Field('author', default = get_first_name(), writable = False),
                 Field('category', requires = IS_IN_SET(MEN_CATEGORY, error_message = 'Field Required')),
-                Field('price_range', requires = IS_IN_SET(PRICE_RANGE, error_message = 'Choose price range')),
-                Field('rating', requires = IS_IN_SET(RATING, error_message = 'Choose a Rating')),
+                Field('total_price_range', 'float', requires = IS_IN_SET(PRICE_RANGE, error_message = 'Choose price range')),
+                Field('price_range', 'float', writable = False),
+                Field('totalRating', 'float', requires = IS_IN_SET(RATING, error_message = 'Choose a Rating')),
+                Field('rating', 'float', writable = False),
                 Field('body', 'text'),
-                Field('image', 'upload'),
+                Field('image'),
                 Field('date_posted', 'datetime', default = datetime.utcnow(), writable = False),
+                Field('reviewCount', 'integer', default = 0, writable = False),
     )
 
 db.define_table('comments',
-                Field('category_id'),
-                Field('body', 'text')
+                Field('product_id'),
+                Field('category'),
+                Field('quality'),
+                Field('price'),
+                Field('reviews', 'text'),
+                Field('author', default = get_first_name(), writable = False),
     )
 
 def create_wiki_links(s):

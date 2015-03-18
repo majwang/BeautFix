@@ -5,8 +5,8 @@
 ## Customize your APP title, subtitle and menus here
 #########################################################################
 
-response.logo = A(B('BeutFix'),XML('&trade;&nbsp;'),
-                 _class="brand",_href="index")
+response.logo = A(B('BeautFix'),XML('&trade;&nbsp;'),
+                 _class="brand")
 response.title = ''
 response.subtitle = ''
 

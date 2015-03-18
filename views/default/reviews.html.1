@@ -16,7 +16,6 @@
 <p></p>
 
 <select id="makeupCategory">
-    <option selected="selected"> </option>
     <option id="faceMakeup">Face Makeup</option>
     <option id="bodyMakeup">Body Makeup</option>
     <option id="eyeMakeup">Eye Makeup</option>
@@ -25,9 +24,8 @@
 </select>
 
 <select id="skinCareCategory">
-    <option selected="selected"> </option>
     <option id="wash">Face Wash</option>
-    <option id="moisturizers">Moisturizers</option>
+    <option id="mosturizers">Mosturizers</option>
     <option id="treatments">Treatments</option>
     <option id="sunscreens">Sunscreens</option>
     <option id="tanners">Tanners</option>
@@ -36,35 +34,31 @@
 </select>
 
 <select id="bathbodyCategory">
-    <option selected="selected"> </option>
-    <option id="lotionCreams">Lotion and Creams</option>
-    <option id="bathShower">Bath and Shower</option>
-    <option id="sun">Sun</option>
-    <option id="other">Other</option>
+    <option id="LotionCreams">Lotion and Creams</option>
+    <option id="BathShower">Bath and Shower</option>
+    <option id="Sun">Sun</option>
+    <option id="Other">Other</option>
 </select>
 
 <select id="hairCategory">
-    <option selected="selected"> </option>
-    <option id="stylingTools">Styling Tools</option>
-    <option id="treatment">Treatment</option>
-    <option id="shampooConditioner">Shampoo and Conditioner</option>
-    <option id="other">Other</option>
+    <option id="StylingTools">Styling Tools</option>
+    <option id="Treatment">Treatment</option>
+    <option id="ShampooConditioner">Shampoo and Conditioner</option>
+    <option id="Other">Other</option>
 </select>
 
 <select id="toolsbrushesCategory">
-    <option selected="selected"> </option>
-    <option id="hairStyleTools">HairStyle Tools</option>
-    <option id="makeupBrushesApplicators">Makeup, Brushes, and Applicators</option>
-    <option id="other">Other</option>
+    <option id="HairStyleTools">HairStyle Tools</option>
+    <option id="MakeupBrushesApplicators">Makeup, Brushes, and Applicators</option>
+    <option id="Other">Other</option>
 </select>
 
 <select id="menCategory">
-    <option selected="selected"> </option>
-    <option id="fragrance">Fragrance</option>
-    <option id="skinCare">Skin Care</option>
-    <option id="shaving">Shaving</option>
-    <option id="hair">Hair</option>
-    <option id="other">Other</option>
+    <option id="Fragrance">Fragrance</option>
+    <option id="SkinCare">Skin Care</option>
+    <option id="Shaving">Shaving</option>
+    <option id="Hair">Hair</option>
+    <option id="Other">Other</option>
 </select>
 </div>
 
@@ -83,7 +77,6 @@
         $("#hairCategory").hide();
         $("#toolsbrushesCategory").hide();
         $("#menCategory").hide();
-        $("#review").hide();
         switch(x) {
             case 0:
                 $("#makeupCategory").show();
@@ -111,64 +104,60 @@
     $("#makeupCategory").change(
         function() {
             if ($(this).find("option:selected").attr("id") == "faceMakeup")
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/makeup/FaceMakeup";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/makeup/faceMakeup";
             else if ($(this).find("option:selected").attr("id") == "bodyMakeup")
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/makeup/BodyMakeup";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/makeup/bodyMakeup";
             else if ($(this).find("option:selected").attr("id") == "eyeMakeup")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/makeup/EyeMakeup";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/makeup/eyeMakeup";
             else if ($(this).find("option:selected").attr("id") == "lips")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/makeup/Lips";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/makeup/lips";
             else if ($(this).find("option:selected").attr("id") == "nails")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/makeup/Nails";
-            $("#review").show();
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/makeup/nails";
     });
     
     $("#skinCareCategory").change(
         function() {
             if ($(this).find("option:selected").attr("id") == "wash")
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/Wash";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/wash";
             else if ($(this).find("option:selected").attr("id") == "moisturizers")
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/Moisturizers";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/moisturizers";
             else if ($(this).find("option:selected").attr("id") == "treatments")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/Treatments";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/treatments";
             else if ($(this).find("option:selected").attr("id") == "sunscreens")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/Sunscreens";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/sunscreens";
             else if ($(this).find("option:selected").attr("id") == "tanners")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/Tanners";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/tanners";
             else if ($(this).find("option:selected").attr("id") == "whiteners")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/Whiteners";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/whiteners";
             else if ($(this).find("option:selected").attr("id") == "other")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/Other";
-            $("#review").show();
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/skinCare/other";
     });
     
-    $("#bathbodyCategory").change(
+    $("#bathBodyCategory").change(
         function() {
             if ($(this).find("option:selected").attr("id") == "lotionCreams")
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/bathBody/LotionCreams";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/bathBody/lotionCreams";
             else if ($(this).find("option:selected").attr("id") == "bathShower")
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/bathBody/BathShower";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/bathBody/bathShower";
             else if ($(this).find("option:selected").attr("id") == "sun")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/bathBody/Sun";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/bathBody/sun";
             else if ($(this).find("option:selected").attr("id") == "other")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/bathBody/Other";
-            $("#review").show();
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/bathBody/other";
     });
     
     $("#hairCategory").change(
         function() {
             if ($(this).find("option:selected").attr("id") == "stylingTools")
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/hair/StylingTools";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/hair/stylingTools";
             else if ($(this).find("option:selected").attr("id") == "treatment")
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/hair/Treatment";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/hair/treatment";
             else if ($(this).find("option:selected").attr("id") == "shampooConditioner")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/hair/ShampooConditioner";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/hair/shampooConditioner";
             else if ($(this).find("option:selected").attr("id") == "other")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/hair/Other";
-            $("#review").show();
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/hair/other";
     });
     
-    $("#toolsbrushesCategory").change(
+    $("#toolsBrushesCategory").change(
         function() {
             if ($(this).find("option:selected").attr("id") == "hairStyleTools")
                 url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/toolsBrushes/HairStyleTools";
@@ -176,22 +165,20 @@
                 url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/toolsBrushes/MakeupBrushesApplicators";
             else if ($(this).find("option:selected").attr("id") == "other")    
                 url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/toolsBrushes/Other";
-            $("#review").show();
     });
     
     $("#menCategory").change(
         function() {
             if ($(this).find("option:selected").attr("id") == "fragrance")
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/men/Fragrance";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/men/fragrance";
             else if ($(this).find("option:selected").attr("id") == "skinCare")
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/men/SkinCare";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/men/skinCare";
             else if ($(this).find("option:selected").attr("id") == "shaving")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/men/Shaving";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/men/shaving";
             else if ($(this).find("option:selected").attr("id") == "hair")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/men/Hair";
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/men/hair";
             else if ($(this).find("option:selected").attr("id") == "other")    
-                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/men/Other";
-            $("#review").show();
+                url = "https://bwichs.pythonanywhere.com/BeautFix/default/writeAreview/men/other";
     });
     
     $("#category").change(
@@ -220,6 +207,4 @@
             }
         });
 </script>
-<div align = 'center'>
-    <input id = "review" type=button onClick="location.href=url" value='Review'>
-</div>
+<input type=button onClick="location.href=url" value='click here'>
